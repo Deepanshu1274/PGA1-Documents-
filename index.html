@@ -408,53 +408,45 @@
       </form>
     </section>
   </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script>
     const form = document.querySelector('form');
 
-    function saveFormDataToExcel() {
-      const workbookData = [
-        [
-          'Full Name',
-          'Mobile Number',
-          'Roon Number',
-          'Aadhaar Card Number',
-          'Parent\'s Mobile Number',
-          'Permanent Address',
-          'Submission Date'
-        ],
-        [
-          document.getElementById('fullName').value.trim(),
-          document.getElementById('mobileNumber').value.trim(),
-          document.getElementById('roonNumber').value.trim(),
-          document.getElementById('aadhaarNumber').value.trim(),
-          document.getElementById('parentMobile').value.trim(),
-          document.getElementById('address').value.trim(),
-          new Date().toLocaleString()
-        ]
-      ];
-
-      const worksheet = XLSX.utils.aoa_to_sheet(workbookData);
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, 'Tenant Data');
-      const workbookBinary = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-      const blob = new Blob([workbookBinary], { type: 'application/octet-stream' });
-      const url = URL.createObjectURL(blob);
-
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = 'tenant-registration.xlsx';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-    }
-
-    form.addEventListener('submit', (event) => {
+    form.addEventListener('submit', async (event) => {
       event.preventDefault();
-      saveFormDataToExcel();
-      alert('Tenant data has been saved to an Excel file on your device.');
-      form.reset();
+
+      const formData = new FormData();
+      formData.append('fullName', document.getElementById('fullName').value.trim());
+      formData.append('mobileNumber', document.getElementById('mobileNumber').value.trim());
+      formData.append('roomNumber', document.getElementById('roonNumber').value.trim());
+      formData.append('aadhaarNumber', document.getElementById('aadhaarNumber').value.trim());
+      formData.append('parentMobileNumber', document.getElementById('parentMobile').value.trim());
+      formData.append('permanentAddress', document.getElementById('address').value.trim());
+      formData.append('pdfPassword', document.getElementById('pdfPassword').value.trim());
+      formData.append('tenantId', `tenant_${Date.now()}`);
+      
+      const pdfFile = document.getElementById('aadhaarPdf').files[0];
+      if (pdfFile) {
+        formData.append('aadhaarPdf', pdfFile);
+      }
+
+      try {
+        const response = await fetch('/api/submit-registration', {
+          method: 'POST',
+          body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          alert('✅ Your registration has been submitted successfully!\n\nYour data has been securely stored. You can close this window.');
+          form.reset();
+        } else {
+          alert('❌ Error: ' + result.message);
+        }
+      } catch (error) {
+        console.error('Error submitting form:', error);
+        alert('❌ Error submitting registration. Please try again.');
+      }
     });
   </script>
 </body>
