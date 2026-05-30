@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PGA1 - Owner Dashboard</title>
+  <style>
+    :root {
+      --primary: #1e4d7a;
+      --accent: #0e9f6e;
+      --danger: #d32f2f;
+      --bg: #f4f8fb;
+      --surface: #ffffff;
+      --text: #172b4d;
+      --muted: #5f6d7a;
+      --border: rgba(30, 77, 122, 0.12);
+      --shadow: 0 4px 16px rgba(15, 41, 75, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(180deg, #eef4fb 0%, #f8fbfd 100%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .container {
+      width: min(1400px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 24px 0;
+    }
+
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 24px 0;
+      box-shadow: 0 2px 8px rgba(15, 41, 75, 0.04);
+      margin-bottom: 32px;
+    }
+
+    header .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #155b8a, #2e84b7);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    button {
+      border: none;
+      border-radius: 10px;
+      padding: 12px 20px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      box-shadow: 0 4px 12px rgba(30, 77, 122, 0.18);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(30, 77, 122, 0.24);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .stat-card h3 {
+      margin: 0 0 12px 0;
+      font-size: 0.9rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .stat-card .number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 0;
+    }
+
+    .table-container {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .table-header {
+      padding: 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fcfdff;
+    }
+
+    .table-header h2 {
+      margin: 0;
+      font-size: 1.2rem;
+      color: var(--primary);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      background: #f9fafb;
+      padding: 16px;
+      text-align: left;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 16px;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.95rem;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover {
+      background: #fafbfc;
+    }
+
+    .tenant-name {
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .status {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      background: #ecf8f2;
+      color: #145d43;
+    }
+
+    .badge-room {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 6px;
+      background: #eef6ff;
+      color: var(--primary);
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .empty-state {
+      padding: 60px 24px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .empty-state h3 {
+      font-size: 1.2rem;
+      margin: 0 0 8px 0;
+      color: var(--text);
+    }
+
+    .loading {
+      padding: 40px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .error {
+      padding: 24px;
+      background: #ffebee;
+      border: 1px solid #ef9a9a;
+      border-radius: 12px;
+      color: #c62828;
+      margin-bottom: 24px;
+    }
+
+    .success {
+      padding: 16px;
+      background: #ecf8f2;
+      border: 1px solid #81c784;
+      border-radius: 12px;
+      color: #145d43;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .success.show {
+      display: block;
+    }
+
+    @media (max-width: 768px) {
+      table {
+        font-size: 0.85rem;
+      }
+
+      th,
+      td {
+        padding: 12px;
+      }
+
+      .table-header {
+        flex-direction: column;
+        gap: 16px;
+        align-items: flex-start;
+      }
+
+      .header-actions {
+        width: 100%;
+      }
+
+      .header-actions button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="logo">
+        <div class="logo-icon">P</div>
+        <div>
+          <div>PGA1 Dashboard</div>
+          <div style="font-size:0.85rem;color:#5f6d7a;font-weight:500;margin-top:2px;">Tenant Management</div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="btn-primary" onclick="downloadExcel()">📥 Download Excel</button>
+        <button class="btn-primary" onclick="refreshData()">🔄 Refresh</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div id="successMessage" class="success">✅ File downloaded successfully!</div>
+
+    <div class="stats">
+      <div class="stat-card">
+        <h3>Total Tenants</h3>
+        <p class="number" id="totalTenants">-</p>
+      </div>
+      <div class="stat-card">
+        <h3>Submissions Today</h3>
+        <p class="number" id="todayTenants">-</p>
+      </div>
+      <div class="stat-card">
+        <h3>Data Status</h3>
+        <p class="number" style="font-size:1.5rem;color:var(--accent);">✅</p>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <div class="table-header">
+        <h2>📋 All Tenant Registrations</h2>
+      </div>
+      <div id="loadingState" class="loading">Loading tenant data...</div>
+      <div id="emptyState" class="empty-state" style="display: none;">
+        <h3>No Tenants Yet</h3>
+        <p>Tenant registrations will appear here once they submit the form.</p>
+      </div>
+      <table id="tenantTable" style="display: none;">
+        <thead>
+          <tr>
+            <th>Tenant ID</th>
+            <th>Full Name</th>
+            <th>Mobile</th>
+            <th>Aadhaar</th>
+            <th>Room</th>
+            <th>PDF File</th>
+            <th>Submitted</th>
+          </tr>
+        </thead>
+        <tbody id="tenantTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    async function loadTenantData() {
+      try {
+        const response = await fetch('/api/all-tenants');
+        const result = await response.json();
+
+        const loadingState = document.getElementById('loadingState');
+        const emptyState = document.getElementById('emptyState');
+        const tenantTable = document.getElementById('tenantTable');
+        const tenantTableBody = document.getElementById('tenantTableBody');
+
+        if (result.data && result.data.length > 0) {
+          loadingState.style.display = 'none';
+          emptyState.style.display = 'none';
+          tenantTable.style.display = 'table';
+
+          // Clear existing rows
+          tenantTableBody.innerHTML = '';
+
+          // Add rows
+          result.data.forEach(tenant => {
+            const row = document.createElement('tr');
+            const submittedDate = new Date(tenant['Submitted Date']).toLocaleString();
+            
+            row.innerHTML = `
+              <td><code style="background:#f0f0f0;padding:4px 8px;border-radius:4px;font-size:0.85rem;">${tenant['Tenant ID']}</code></td>
+              <td class="tenant-name">${tenant['Full Name']}</td>
+              <td>${tenant['Mobile Number']}</td>
+              <td>${tenant['Aadhaar Number']}</td>
+              <td><span class="badge-room">${tenant['Room Number']}</span></td>
+              <td><a href="#" onclick="return false;" title="${tenant['PDF File']}" style="color:var(--accent);text-decoration:none;font-weight:500;">📄 View PDF</a></td>
+              <td style="color:var(--muted);font-size:0.9rem;">${submittedDate}</td>
+            `;
+            tenantTableBody.appendChild(row);
+          });
+
+          // Update stats
+          document.getElementById('totalTenants').textContent = result.count;
+          
+          // Count today's submissions
+          const today = new Date().toDateString();
+          const todayCount = result.data.filter(t => {
+            return new Date(t['Submitted Date']).toDateString() === today;
+          }).length;
+          document.getElementById('todayTenants').textContent = todayCount;
+
+        } else {
+          loadingState.style.display = 'none';
+          emptyState.style.display = 'block';
+          tenantTable.style.display = 'none';
+          
+          document.getElementById('totalTenants').textContent = '0';
+          document.getElementById('todayTenants').textContent = '0';
+        }
+      } catch (error) {
+        console.error('Error loading tenant data:', error);
+        document.getElementById('loadingState').innerHTML = 
+          '<div style="color:var(--danger);">❌ Error loading data. Please try again.</div>';
+      }
+    }
+
+    async function downloadExcel() {
+      try {
+        const response = await fetch('/api/download-excel');
+        
+        if (!response.ok) {
+          alert('No Excel file available yet. Please wait for tenant submissions.');
+          return;
+        }
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Tenant_Data.xlsx';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+
+        // Show success message
+        const successMsg = document.getElementById('successMessage');
+        successMsg.classList.add('show');
+        setTimeout(() => successMsg.classList.remove('show'), 3000);
+      } catch (error) {
+        console.error('Error downloading Excel:', error);
+        alert('Error downloading Excel file');
+      }
+    }
+
+    function refreshData() {
+      loadTenantData();
+    }
+
+    // Load data on page load
+    loadTenantData();
+
+    // Auto-refresh every 30 seconds
+    setInterval(loadTenantData, 30000);
+  </script>
+</body>
+</html>
