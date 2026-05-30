@@ -366,8 +366,8 @@
               <input id="aadhaarNumber" type="text" placeholder="1234 5678 9012" maxlength="14" inputmode="numeric" required />
             </div>
             <div class="field">
-              <label for="roonNumber">Roon Number</label>
-              <input id="roonNumber" type="text" placeholder="Enter your roon number" required />
+              <label for="roomNumber">Room Number</label>
+              <input id="roomNumber" type="text" placeholder="Enter your room number" required />
             </div>
             <div class="field">
               <label for="parentMobile">Parent's Mobile Number</label>
@@ -417,7 +417,7 @@
       const formData = new FormData();
       formData.append('fullName', document.getElementById('fullName').value.trim());
       formData.append('mobileNumber', document.getElementById('mobileNumber').value.trim());
-      formData.append('roomNumber', document.getElementById('roonNumber').value.trim());
+      formData.append('roomNumber', document.getElementById('roomNumber').value.trim());
       formData.append('aadhaarNumber', document.getElementById('aadhaarNumber').value.trim());
       formData.append('parentMobileNumber', document.getElementById('parentMobile').value.trim());
       formData.append('permanentAddress', document.getElementById('address').value.trim());
