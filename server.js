@@ -30,7 +30,7 @@ app.use(express.static('.'));
 // Multer configuration for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const tenantDir = path.join(uploadsDir, req.body.tenantId);
+    const tenantDir = path.join(uploadsDir, req.tenantId || `tenant_${Date.now()}`);
     if (!fs.existsSync(tenantDir)) {
       fs.mkdirSync(tenantDir, { recursive: true });
     }
@@ -53,10 +53,15 @@ const upload = multer({
   }
 });
 
+const assignTenantId = (req, res, next) => {
+  req.tenantId = `tenant_${Date.now()}`;
+  next();
+};
+
 // API endpoint to receive tenant form data
-app.post('/api/submit-registration', upload.single('aadhaarPdf'), (req, res) => {
+app.post('/api/submit-registration', assignTenantId, upload.single('aadhaarPdf'), (req, res) => {
   try {
-    const tenantId = `tenant_${Date.now()}`;
+    const tenantId = req.tenantId || `tenant_${Date.now()}`;
     
     // Prepare form data
     const formData = {

@@ -422,7 +422,6 @@
       formData.append('parentMobileNumber', document.getElementById('parentMobile').value.trim());
       formData.append('permanentAddress', document.getElementById('address').value.trim());
       formData.append('pdfPassword', document.getElementById('pdfPassword').value.trim());
-      formData.append('tenantId', `tenant_${Date.now()}`);
       
       const pdfFile = document.getElementById('aadhaarPdf').files[0];
       if (pdfFile) {
