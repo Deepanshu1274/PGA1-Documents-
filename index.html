@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PGA1 Tenant Registration</title>
+  <style>
+    :root {
+      --bg: #f4f8fb;
+      --surface: #ffffff;
+      --primary: #1e4d7a;
+      --primary-soft: #3b6d9d;
+      --accent: #0e9f6e;
+      --text: #172b4d;
+      --muted: #5f6d7a;
+      --border: rgba(30, 77, 122, 0.12);
+      --shadow: 0 24px 80px rgba(15, 41, 75, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(180deg, #eef4fb 0%, #f8fbfd 100%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .page-wrapper {
+      width: min(1200px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 24px 0 40px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      padding: 24px 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .brand-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #155b8a, #2e84b7);
+      color: white;
+      font-size: 1.25rem;
+      box-shadow: 0 12px 28px rgba(30, 77, 122, 0.18);
+    }
+
+    .hero-card {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 28px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      padding: 36px;
+      margin-top: 12px;
+    }
+
+    .hero-copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 18px;
+    }
+
+    .hero-copy h1 {
+      margin: 0;
+      font-size: clamp(2.05rem, 2.5vw, 3rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-copy p {
+      margin: 0;
+      max-width: 540px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .hero-highlight {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #eef6ff;
+      color: var(--primary);
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-weight: 600;
+      width: fit-content;
+    }
+
+    .form-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      margin-top: 32px;
+    }
+
+    .form-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 28px 32px;
+      border-bottom: 1px solid var(--border);
+      background: #fcfdff;
+    }
+
+    .form-header h2 {
+      margin: 0;
+      font-size: 1.35rem;
+      color: var(--primary);
+    }
+
+    .form-header span {
+      color: var(--muted);
+      font-size: 0.97rem;
+    }
+
+    form {
+      display: grid;
+      gap: 28px;
+      padding: 32px;
+    }
+
+    .section-card {
+      display: grid;
+      gap: 22px;
+      padding: 24px;
+      background: #fcfdff;
+      border-radius: 20px;
+      border: 1px solid rgba(30, 77, 122, 0.08);
+    }
+
+    .section-card h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      color: var(--primary);
+    }
+
+    .field-grid {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    label {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    input,
+    textarea,
+    .file-input {
+      width: 100%;
+      border: 1px solid rgba(30, 77, 122, 0.16);
+      border-radius: 16px;
+      background: white;
+      color: var(--text);
+      font: inherit;
+      padding: 14px 16px;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    input:focus,
+    textarea:focus,
+    .file-input:focus-visible {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(30, 77, 122, 0.08);
+    }
+
+    textarea {
+      min-height: 122px;
+      resize: vertical;
+    }
+
+    .field-small {
+      border-radius: 14px;
+    }
+
+    .highlight-box {
+      padding: 22px 24px;
+      border: 1px solid rgba(14, 159, 110, 0.22);
+      background: #ecf8f2;
+      border-radius: 18px;
+      color: #145d43;
+      line-height: 1.7;
+    }
+
+    .highlight-box a {
+      font-weight: 700;
+      color: #0d7b54;
+    }
+
+    .instructions {
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    .password-note {
+      font-size: 0.92rem;
+      color: var(--muted);
+      margin-top: -10px;
+      padding-left: 2px;
+      line-height: 1.6;
+    }
+
+    .submit-container {
+      display: flex;
+      justify-content: center;
+      padding-top: 8px;
+    }
+
+    .submit-button {
+      width: 100%;
+      max-width: 340px;
+      border: none;
+      border-radius: 14px;
+      padding: 16px 24px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: white;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 16px 32px rgba(30, 77, 122, 0.18);
+    }
+
+    .submit-button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 20px 36px rgba(30, 77, 122, 0.22);
+    }
+
+    .form-note {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      text-align: center;
+      padding-top: 10px;
+    }
+
+    .form-note svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      color: var(--accent);
+    }
+
+    @media (max-width: 860px) {
+      .hero-card {
+        grid-template-columns: 1fr;
+      }
+
+      .field-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .page-wrapper {
+        width: calc(100% - 24px);
+        padding: 18px 0 32px;
+      }
+
+      .hero-card {
+        padding: 24px;
+      }
+
+      .form-header,
+      form {
+        padding: 24px;
+      }
+
+      .section-card {
+        padding: 20px;
+      }
+
+      .submit-container {
+        padding-top: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrapper">
+    <header>
+      <div class="brand">
+        <div class="brand-icon">P</div>
+        <div>
+          <div>PGA1</div>
+          <div style="font-size:0.9rem;color:#5f6d7a;font-weight:500;">Secure Tenant Registration</div>
+        </div>
+      </div>
+    </header>
+
+    <section class="hero-card">
+      <div class="hero-copy">
+        <span class="hero-highlight">Trusted PG Accommodation</span>
+        <h1>Welcome to PGA1 — Your secure tenant onboarding portal.</h1>
+        <p>Complete your registration with confidence. Upload your official e-Aadhaar, share required details, and let us verify your identity safely for a comfortable stay.</p>
+      </div>
+      <div style="display:grid;place-items:center;">
+        <img src="https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=900&q=80" alt="PG accommodation" style="width:100%;border-radius:24px;object-fit:cover;min-height:280px;box-shadow:0 24px 80px rgba(15,41,75,0.1);" />
+      </div>
+    </section>
+
+    <section class="form-card">
+      <div class="form-header">
+        <div>
+          <h2>Tenant Registration Form</h2>
+          <span>Please fill in accurate information and upload your Aadhaar document securely.</span>
+        </div>
+      </div>
+      <form>
+        <div class="section-card">
+          <h3>1. Basic Information</h3>
+          <div class="field-grid">
+            <div class="field">
+              <label for="fullName">Full Name</label>
+              <input id="fullName" type="text" placeholder="Enter your full name" required />
+            </div>
+            <div class="field">
+              <label for="mobileNumber">Mobile Number</label>
+              <input id="mobileNumber" type="tel" placeholder="Enter your mobile number" pattern="[0-9]{10}" required />
+            </div>
+            <div class="field">
+              <label for="aadhaarNumber">Aadhaar Card Number</label>
+              <input id="aadhaarNumber" type="text" placeholder="1234 5678 9012" maxlength="14" inputmode="numeric" required />
+            </div>
+            <div class="field">
+              <label for="parentMobile">Parent's Mobile Number</label>
+              <input id="parentMobile" type="tel" placeholder="Parent's mobile number" pattern="[0-9]{10}" required />
+            </div>
+            <div class="field" style="grid-column: 1 / -1;">
+              <label for="address">Permanent Address</label>
+              <textarea id="address" placeholder="Enter your permanent address" required></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-card">
+          <h3>2. Document Verification</h3>
+          <div class="highlight-box">
+            Please upload your official e-Aadhaar. You can download the original copy directly from the official UIDAI website <a href="https://myaadhaar.uidai.gov.in/genricDownloadAadhaar" target="_blank" rel="noreferrer">here</a>.
+          </div>
+          <div class="field-grid">
+            <div class="field">
+              <label for="aadhaarPdf">Upload e-Aadhaar PDF</label>
+              <input id="aadhaarPdf" class="file-input" type="file" accept="application/pdf" required />
+            </div>
+            <div class="field">
+              <label for="pdfPassword">e-Aadhaar PDF Password</label>
+              <input id="pdfPassword" type="password" placeholder="Enter PDF password" required />
+              <div class="password-note">Please provide the 8-character password required to open your downloaded Aadhaar PDF (usually the first 4 letters of your name in CAPITAL letters followed by your year of birth, e.g., ABCD1995).</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="submit-container">
+          <button type="submit" class="submit-button">Submit Application</button>
+        </div>
+        <div class="form-note">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-.5-13h1v6h-1V7zm0 8h1v1h-1v-1z"></path></svg>
+          Your registration is kept private and handled with secure PG care standards.
+        </div>
+      </form>
+    </section>
+  </div>
+</body>
+</html>
