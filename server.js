@@ -112,7 +112,7 @@ app.post('/api/submit-registration', assignTenantId, (req, res) => {
       const tenantId = req.tenantId || `tenant_${Date.now()}`;
       
       // Validate required fields
-      if (!req.body.fullName || !req.body.mobileNumber || !req.body.aadhaarNumber) {
+      if (!req.body.fullName || !req.body.mobileNumber || !req.body.roomNumber || !req.body.moveInDate) {
         return res.status(400).json({
           success: false,
           message: 'Missing required fields'
@@ -132,7 +132,7 @@ app.post('/api/submit-registration', assignTenantId, (req, res) => {
         fullName: req.body.fullName,
         mobileNumber: req.body.mobileNumber,
         roomNumber: req.body.roomNumber,
-        aadhaarNumber: req.body.aadhaarNumber,
+        moveInDate: req.body.moveInDate,
         parentMobileNumber: req.body.parentMobileNumber,
         permanentAddress: req.body.permanentAddress,
         pdfPassword: req.body.pdfPassword,
@@ -158,8 +158,8 @@ app.post('/api/submit-registration', assignTenantId, (req, res) => {
         tenantId: tenantId,
         fullName: formData.fullName,
         mobileNumber: formData.mobileNumber,
-        aadhaarNumber: formData.aadhaarNumber,
         roomNumber: formData.roomNumber,
+        moveInDate: formData.moveInDate,
         submittedAt: formData.submittedAt,
         pdfFile: req.file.filename
       });
@@ -180,8 +180,8 @@ app.post('/api/submit-registration', assignTenantId, (req, res) => {
         worksheet['A1'] = { t: 's', v: 'Tenant ID' };
         worksheet['B1'] = { t: 's', v: 'Full Name' };
         worksheet['C1'] = { t: 's', v: 'Mobile Number' };
-        worksheet['D1'] = { t: 's', v: 'Aadhaar Number' };
-        worksheet['E1'] = { t: 's', v: 'Room Number' };
+        worksheet['D1'] = { t: 's', v: 'Room Number' };
+        worksheet['E1'] = { t: 's', v: 'Move-In Date' };
         worksheet['F1'] = { t: 's', v: 'Parent Mobile' };
         worksheet['G1'] = { t: 's', v: 'PDF File' };
         worksheet['H1'] = { t: 's', v: 'Submitted Date' };
@@ -198,8 +198,8 @@ app.post('/api/submit-registration', assignTenantId, (req, res) => {
         'Tenant ID': tenantId,
         'Full Name': formData.fullName,
         'Mobile Number': formData.mobileNumber,
-        'Aadhaar Number': formData.aadhaarNumber,
         'Room Number': formData.roomNumber,
+        'Move-In Date': formData.moveInDate,
         'Parent Mobile': formData.parentMobileNumber,
         'PDF File': req.file.filename,
         'Submitted Date': formData.submittedAt

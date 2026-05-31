@@ -322,7 +322,7 @@
             <th>Tenant ID</th>
             <th>Full Name</th>
             <th>Mobile</th>
-            <th>Aadhaar</th>
+            <th>Move-In</th>
             <th>Room</th>
             <th>PDF File</th>
             <th>Submitted</th>
@@ -361,7 +361,7 @@
               <td><code style="background:#f0f0f0;padding:4px 8px;border-radius:4px;font-size:0.85rem;">${tenant['Tenant ID']}</code></td>
               <td class="tenant-name">${tenant['Full Name']}</td>
               <td>${tenant['Mobile Number']}</td>
-              <td>${tenant['Aadhaar Number']}</td>
+              <td>${tenant['Move-In Date'] || ''}</td>
               <td><span class="badge-room">${tenant['Room Number']}</span></td>
               <td><a href="#" onclick="return false;" title="${tenant['PDF File']}" style="color:var(--accent);text-decoration:none;font-weight:500;">📄 View PDF</a></td>
               <td style="color:var(--muted);font-size:0.9rem;">${submittedDate}</td>

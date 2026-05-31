@@ -362,8 +362,8 @@
               <input id="mobileNumber" type="tel" placeholder="Enter your mobile number" pattern="[0-9]{10}" required />
             </div>
             <div class="field">
-              <label for="aadhaarNumber">Aadhaar Card Number</label>
-              <input id="aadhaarNumber" type="text" placeholder="1234 5678 9012" maxlength="14" inputmode="numeric" required />
+              <label for="moveInDate">Move-In Date</label>
+              <input id="moveInDate" type="date" required />
             </div>
             <div class="field">
               <label for="roomNumber">Room Number</label>
@@ -418,7 +418,7 @@
       formData.append('fullName', document.getElementById('fullName').value.trim());
       formData.append('mobileNumber', document.getElementById('mobileNumber').value.trim());
       formData.append('roomNumber', document.getElementById('roomNumber').value.trim());
-      formData.append('aadhaarNumber', document.getElementById('aadhaarNumber').value.trim());
+      formData.append('moveInDate', document.getElementById('moveInDate').value);
       formData.append('parentMobileNumber', document.getElementById('parentMobile').value.trim());
       formData.append('permanentAddress', document.getElementById('address').value.trim());
       formData.append('pdfPassword', document.getElementById('pdfPassword').value.trim());
