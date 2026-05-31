@@ -34,6 +34,69 @@
       text-decoration: none;
     }
 
+    @keyframes slideIn {
+      0% {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      100% {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideOut {
+      0% {
+        transform: translateX(0);
+        opacity: 1;
+      }
+      100% {
+        transform: translateX(-100%);
+        opacity: 0;
+      }
+    }
+
+    .carousel-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      border-radius: 24px;
+    }
+
+    .carousel-slide {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+    }
+
+    .carousel-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .carousel-slide:nth-child(1) {
+      animation: slideOut 0.8s ease-in-out 4s forwards;
+    }
+
+    .carousel-slide:nth-child(2) {
+      animation: slideIn 0.8s ease-in-out 4s forwards;
+    }
+
+    .carousel-slide:nth-child(1).active {
+      animation: none;
+      z-index: 2;
+    }
+
+    .carousel-slide:nth-child(2).active {
+      animation: none;
+      z-index: 1;
+    }
+
     .page-wrapper {
       width: min(1200px, calc(100% - 32px));
       margin: 0 auto;
@@ -337,8 +400,15 @@
         <h1>Welcome to PGA1 — Your secure tenant onboarding portal.</h1>
         <p>Complete your registration with confidence. Upload your official e-Aadhaar, share required details, and let us verify your identity safely for a comfortable stay.</p>
       </div>
-      <div style="display:grid;place-items:center;">
-        <img src="https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=900&q=80" alt="PG accommodation" style="width:100%;border-radius:24px;object-fit:cover;min-height:280px;box-shadow:0 24px 80px rgba(15,41,75,0.1);" />
+      <div style="display:grid;place-items:center;position:relative;height:400px;">
+        <div class="carousel-container" style="width:100%;height:100%;">
+          <div class="carousel-slide active">
+            <img src="PGA1_shanti_nagar_room_1.jpeg" alt="PGA Room 1" />
+          </div>
+          <div class="carousel-slide">
+            <img src="PGA1_shanti_nagar_room_2.jpeg" alt="PGA Room 2" />
+          </div>
+        </div>
       </div>
     </section>
 
@@ -409,6 +479,32 @@
     </section>
   </div>
   <script>
+    // Carousel functionality
+    const carousel = {
+      slides: [],
+      currentSlide: 0,
+      init() {
+        this.slides = document.querySelectorAll('.carousel-slide');
+        this.startAutoPlay();
+      },
+      startAutoPlay() {
+        setInterval(() => {
+          this.nextSlide();
+        }, 5000); // Change slide every 5 seconds
+      },
+      nextSlide() {
+        this.slides[this.currentSlide].classList.remove('active');
+        this.currentSlide = (this.currentSlide + 1) % this.slides.length;
+        this.slides[this.currentSlide].classList.add('active');
+      }
+    };
+
+    // Initialize carousel when page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      carousel.init();
+    });
+
+    // Form submission
     const form = document.querySelector('form');
 
     form.addEventListener('submit', async (event) => {
