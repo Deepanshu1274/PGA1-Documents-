@@ -54,8 +54,44 @@ const upload = multer({
   }
 });
 
+const getNextTenantId = () => {
+  const masterFilePath = path.join(dataDir, 'all_registrations.json');
+  let highestNumber = 0;
+
+  if (fs.existsSync(masterFilePath)) {
+    try {
+      const allRegistrations = JSON.parse(fs.readFileSync(masterFilePath, 'utf8'));
+      if (Array.isArray(allRegistrations)) {
+        highestNumber = allRegistrations.reduce((max, entry) => {
+          const match = String(entry.tenantId || '').match(/tenant_(\d+)/);
+          const number = match ? parseInt(match[1], 10) : NaN;
+          return Number.isFinite(number) ? Math.max(max, number) : max;
+        }, 0);
+      }
+    } catch (error) {
+      console.warn('Warning reading tenant index:', error.message);
+    }
+  } else if (fs.existsSync(uploadsDir)) {
+    const dirs = fs.readdirSync(uploadsDir, { withFileTypes: true });
+    dirs.forEach((dir) => {
+      if (dir.isDirectory()) {
+        const match = dir.name.match(/tenant_(\d+)/);
+        if (match) {
+          const number = parseInt(match[1], 10);
+          if (Number.isFinite(number)) {
+            highestNumber = Math.max(highestNumber, number);
+          }
+        }
+      }
+    });
+  }
+
+  const nextNumber = highestNumber + 1;
+  return `tenant_${String(nextNumber).padStart(2, '0')}`;
+};
+
 const assignTenantId = (req, res, next) => {
-  req.tenantId = `tenant_${Date.now()}`;
+  req.tenantId = getNextTenantId();
   next();
 };
 
